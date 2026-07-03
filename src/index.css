@@ -1,0 +1,245 @@
+/* src/index.css
+   Apex DriveOS Customer Website — Global styles
+   Google Fonts + CSS custom properties + base resets */
+
+/* ── Google Fonts ─────────────────────────────────────────────────────────── */
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── CSS custom properties ────────────────────────────────────────────────── */
+:root {
+  /* Colors */
+  --gold: #d4af37;
+  --gold-light: #e8c84a;
+  --gold-dark: #b8931f;
+  --bg: #050a14;
+  --surface: #0b1120;
+  --card: #0d1829;
+  --cream: #f8f6f0;
+  --muted: #94a3b8;
+  --subtle: #475569;
+  --border: rgba(212, 175, 55, 0.12);
+
+  /* Transitions */
+  --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Base resets ──────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Prevent layout shift from scrollbar appearing */
+  overflow-y: scroll;
+}
+
+body {
+  background-color: #050a14;
+  color: #f8f6f0;
+  font-family: "Inter", system-ui, sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Typography helpers ───────────────────────────────────────────────────── */
+.font-display {
+  font-family: "Playfair Display", Georgia, serif;
+}
+
+/* Elegant text gradient for gold headlines */
+.text-gold-display {
+  background: linear-gradient(135deg, #b8931f, #d4af37, #e8c84a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Label style — used for section identifiers */
+.label-luxury {
+  font-family: "Inter", sans-serif;
+  font-size: 0.625rem; /* 10px */
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* ── Scrollbar ────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 2px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.2);
+  border-radius: 40px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 175, 55, 0.4);
+}
+
+/* ── Selection ────────────────────────────────────────────────────────────── */
+::selection {
+  background: rgba(212, 175, 55, 0.2);
+  color: #f8f6f0;
+}
+
+/* ── Gold horizontal rule ─────────────────────────────────────────────────── */
+.gold-rule {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+/* ── Card base ────────────────────────────────────────────────────────────── */
+.site-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.site-card-hover {
+  transition:
+    transform 0.3s var(--ease-luxury),
+    box-shadow 0.3s var(--ease-luxury),
+    border-color 0.3s ease;
+}
+
+.site-card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 8px 40px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(212, 175, 55, 0.15);
+  border-color: rgba(212, 175, 55, 0.25);
+}
+
+/* ── Gold button ──────────────────────────────────────────────────────────── */
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background: var(--gold);
+  color: #050a14;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s var(--ease-luxury);
+  white-space: nowrap;
+}
+
+.btn-gold:hover {
+  background: var(--gold-light);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.3);
+}
+
+.btn-gold:active {
+  transform: scale(0.98) translateY(0);
+}
+
+/* ── Ghost button ─────────────────────────────────────────────────────────── */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 31px;
+  background: transparent;
+  color: var(--cream);
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  border: 1px solid rgba(248, 246, 240, 0.25);
+  cursor: pointer;
+  transition: all 0.25s var(--ease-luxury);
+  white-space: nowrap;
+}
+
+.btn-ghost:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  transform: translateY(-1px);
+}
+
+.btn-ghost:active {
+  transform: scale(0.98);
+}
+
+/* ── Input luxury (website variant) ─────────────────────────────────────────*/
+.input-site {
+  width: 100%;
+  background: rgba(13, 24, 41, 0.8);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  border-radius: 4px;
+  padding: 14px 16px;
+  color: var(--cream);
+  font-family: "Inter", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 400;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  outline: none;
+}
+
+.input-site::placeholder {
+  color: var(--subtle);
+}
+
+.input-site:focus {
+  border-color: rgba(212, 175, 55, 0.4);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.06);
+}
+
+/* ── Section container ────────────────────────────────────────────────────── */
+.container-site {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+@media (min-width: 768px) {
+  .container-site {
+    padding: 0 48px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container-site {
+    padding: 0 80px;
+  }
+}
+
+/* ── Reduced motion ───────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
