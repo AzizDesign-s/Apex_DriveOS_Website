@@ -2,9 +2,9 @@
 // Sprint 5 — Test Drive Booking page.
 //
 // CROSS-MODULE WRITES (on submit):
-//   apex-gt-bookings  — new booking record (status: pending)
-//   apex-gt-customers — create/find customer (source: Website)
-//   apex-gt-leads     — new lead (status: new_inquiry, source: Website)
+//   apex-driveos-bookings  — new booking record (status: pending)
+//   apex-driveos-customers — create/find customer (source: Website)
+//   apex-driveos-leads     — new lead (status: new_inquiry, source: Website)
 //
 // PRE-FILL:
 //   ?car=:id in URL pre-selects the vehicle

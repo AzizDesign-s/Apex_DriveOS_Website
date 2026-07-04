@@ -1,6 +1,6 @@
 // src/pages/Cars.jsx
 // Vehicle browse page — left sidebar filters + 3-col grid.
-// Data: live from localStorage (apex-gt-cars) via useVehicles hook.
+// Data: live from localStorage (apex-driveos-cars) via useVehicles hook.
 // Filters: brand, price range, fuel type, body type, transmission.
 // Sort: price asc/desc, newest, brand A-Z.
 
@@ -146,7 +146,7 @@ function Cars() {
           <div className="relative flex-1">
             <Search
               size={14}
-              className="absolute left-3 top-1/2 -translate-y-1/2"
+              className="absolute right-3 top-1/2 -translate-y-1/2"
               style={{ color: "rgba(248,246,240,0.3)" }}
             />
             <input
@@ -209,7 +209,7 @@ function Cars() {
               <div className="relative flex-1 max-w-xs">
                 <Search
                   size={14}
-                  className="absolute left-3 top-1/2 -translate-y-1/2"
+                  className="absolute right-3 top-1/2 -translate-y-1/2"
                   style={{ color: "rgba(248,246,240,0.3)" }}
                 />
                 <input

@@ -3,7 +3,7 @@
 // Left: contact form. Right: showroom info + map placeholder.
 //
 // ON SUBMIT:
-//   Creates a notification in apex-gt-notifications so the
+//   Creates a notification in apex-driveos-notifications so the
 //   admin sees the enquiry live in the Notifications panel.
 
 import { useState } from "react";

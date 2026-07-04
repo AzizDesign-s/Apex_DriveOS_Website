@@ -1,6 +1,6 @@
 // src/pages/Promotions.jsx
 // Customer-facing promotions page.
-// Reads live from apex-gt-promotions localStorage.
+// Reads live from apex-driveos-promotions localStorage.
 // More visual than the admin PromotionCard — bigger discount hero,
 // applicability chip, countdown timer, enquiry CTA.
 

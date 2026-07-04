@@ -12,7 +12,7 @@
 //   8. Sticky CTA bar — always visible at bottom of screen
 //
 // DATA:
-//   Reads from apex-gt-cars localStorage via useVehicles hook.
+//   Reads from apex-driveos-cars localStorage via useVehicles hook.
 //   Matches by vehicle.id from URL param (:id).
 //   If vehicle not found: shows elegant 404 state.
 //
