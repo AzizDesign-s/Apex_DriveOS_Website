@@ -1,6 +1,6 @@
 // src/pages/Login.jsx
 // Customer-facing login page.
-// Mock auth: matches against apex-gt-customers localStorage.
+// Mock auth: matches against apex-driveos-customers localStorage.
 // Any password accepted for this sprint.
 // Real auth: replace signIn in useCustomerAuth with Supabase when ready.
 

@@ -1,11 +1,17 @@
 // src/hooks/usePromotions.js
-// Live promotions from localStorage (shared with admin panel).
+// FIXED: BroadcastChannel sync + seed initialization
 
 import { useState, useEffect } from "react";
-import { loadFromLS, KEYS } from "../utils/localStorage";
+import {
+  loadFromLS,
+  KEYS,
+  onBroadcastMessage,
+  initializeSeedData,
+} from "../utils/localStorage";
 import { promotions as seedPromotions } from "../data/mockData";
 
-// ── Status helper (same logic as admin's getPromotionStatus) ─────────────────
+initializeSeedData({ [KEYS.promotions]: seedPromotions });
+
 export const getPromotionStatus = (promotion) => {
   const today = new Date();
   const start = new Date(promotion.startDate);
@@ -23,13 +29,26 @@ export function usePromotions() {
   useEffect(() => {
     const reload = () =>
       setPromotions(loadFromLS(KEYS.promotions, seedPromotions));
+
+    const unsubscribe = onBroadcastMessage(({ key, data }) => {
+      if (key === KEYS.promotions && Array.isArray(data)) {
+        setPromotions(data);
+        try {
+          localStorage.setItem(KEYS.promotions, JSON.stringify(data));
+        } catch {
+          /* silent */
+        }
+      }
+    });
+
     window.addEventListener("apex-driveos-promotions-updated", reload);
     window.addEventListener("storage", (e) => {
       if (e.key === KEYS.promotions) reload();
     });
+
     return () => {
       window.removeEventListener("apex-driveos-promotions-updated", reload);
-      window.removeEventListener("storage", reload);
+      unsubscribe();
     };
   }, []);
 

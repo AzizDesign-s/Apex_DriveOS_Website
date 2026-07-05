@@ -1,37 +1,63 @@
 // src/hooks/useVehicles.js
-// Live vehicle data from localStorage (shared with admin panel).
-// Falls back to seed data if localStorage is empty.
+// FIXED: BroadcastChannel sync + seed initialization
 
 import { useState, useEffect } from "react";
-import { loadFromLS, KEYS } from "../utils/localStorage";
-import { cars as seedCars } from "../data/mockData";
+import {
+  loadFromLS,
+  saveToLS,
+  KEYS,
+  onBroadcastMessage,
+  initializeSeedData,
+} from "../utils/localStorage";
+import {
+  cars as seedCars,
+  promotions as seedPromotions,
+} from "../data/mockData";
+
+// Initialize seed data on first load
+initializeSeedData({
+  [KEYS.cars]: seedCars,
+  [KEYS.promotions]: seedPromotions,
+});
 
 export function useVehicles() {
   const [vehicles, setVehicles] = useState(() =>
     loadFromLS(KEYS.cars, seedCars),
   );
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Reload when admin updates inventory
-    const reload = () => setVehicles(loadFromLS(KEYS.cars, seedCars));
-    window.addEventListener("apex-driveos-cars-updated", reload);
-    window.addEventListener("storage", (e) => {
-      if (e.key === KEYS.cars) reload();
+    // Same-origin event (admin on same port — future)
+    const onSameOrigin = () => setVehicles(loadFromLS(KEYS.cars, seedCars));
+
+    // Cross-port BroadcastChannel sync (admin on different port)
+    const unsubscribe = onBroadcastMessage(({ key, data }) => {
+      if (key === KEYS.cars && Array.isArray(data)) {
+        setVehicles(data);
+        // Also persist to this origin's localStorage
+        try {
+          localStorage.setItem(KEYS.cars, JSON.stringify(data));
+        } catch {
+          /* silent */
+        }
+      }
     });
+
+    window.addEventListener("apex-driveos-cars-updated", onSameOrigin);
+    window.addEventListener("storage", (e) => {
+      if (e.key === KEYS.cars) onSameOrigin();
+    });
+
     return () => {
-      window.removeEventListener("apex-driveos-cars-updated", reload);
-      window.removeEventListener("storage", reload);
+      window.removeEventListener("apex-driveos-cars-updated", onSameOrigin);
+      unsubscribe();
     };
   }, []);
 
-  // Only show vehicles customers can buy or be interested in
   const available = vehicles.filter(
     (v) => v.status === "available" || v.status === "interested",
   );
 
-  // Featured: the 3 most expensive available vehicles
   const featured = [...available].sort((a, b) => b.price - a.price).slice(0, 3);
 
-  return { vehicles, available, featured, loading };
+  return { vehicles, available, featured };
 }

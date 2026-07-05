@@ -1,14 +1,12 @@
 // src/data/mockData.js
-// Website copy of admin mock data.
-// Cars use the same shape as the admin panel so localStorage
-// reads work correctly when both apps run in the same browser.
-// Promotions are also copied here as fallback seed data.
+// FIXED:
+//   1. Promotion dates updated to future (currently July 2026,
+//      so end dates pushed to Dec 2026)
+//   2. Full cars seed matching admin panel exactly
+//   3. Added customers, bookings seed so Account page has demo data
+//   4. Added calcInvoice utility used by TestDrive page totals
 
-// ── Seed cars (fallback when apex-driveos-cars is empty) ──────────────────────────
-// These match the admin panel seed data exactly.
-// Images are null — the elegant placeholder renders instead.
-// When real photos are added via admin, they appear here automatically.
-
+// ── Seed cars ─────────────────────────────────────────────────────────────────
 export const cars = [
   {
     id: 1,
@@ -25,9 +23,9 @@ export const cars = [
     price: 680000,
     status: "available",
     photos: [],
-    notes: "",
+    notes: "Immaculate condition. Full service history.",
     features:
-      "• AMG Performance Exhaust\n• Burmester 3D Surround Sound\n• Night Vision Assist\n• Driving Assistance Package",
+      "• AMG Performance Exhaust\n• Burmester 3D Surround Sound\n• Night Vision Assist\n• Driving Assistance Package Plus\n• AMG Track Pace",
   },
   {
     id: 2,
@@ -42,11 +40,11 @@ export const cars = [
     transmission: "automatic",
     bodyType: "coupe",
     price: 520000,
-    status: "reserved",
+    status: "available",
     photos: [],
-    notes: "",
+    notes: "One owner. Warranty valid.",
     features:
-      "• M Carbon Ceramic Brakes\n• Bowers & Wilkins Diamond Surround Sound\n• M Driver's Package\n• Laser Headlights",
+      "• M Carbon Ceramic Brakes\n• Bowers & Wilkins Diamond Sound\n• M Driver's Package\n• Laser Headlights\n• Executive Package",
   },
   {
     id: 3,
@@ -63,9 +61,9 @@ export const cars = [
     price: 950000,
     status: "available",
     photos: [],
-    notes: "",
+    notes: "Track-focused masterpiece.",
     features:
-      "• Track-focused suspension\n• Carbon fibre body panels\n• Scuderia Ferrari shields\n• Racing bucket seats",
+      "• Track-focused suspension\n• Carbon fibre body panels\n• Scuderia Ferrari shields\n• Racing bucket seats\n• Michelin Pilot Sport Cup 2",
   },
   {
     id: 4,
@@ -82,15 +80,15 @@ export const cars = [
     price: 1890000,
     status: "available",
     photos: [],
-    notes: "",
+    notes: "The pinnacle of luxury motoring.",
     features:
-      "• Starlight Headliner\n• Bespoke Audio System\n• Rear Theatre Configuration\n• Champagne Cooler",
+      "• Starlight Headliner\n• Bespoke Audio System\n• Rear Theatre Configuration\n• Champagne Cooler\n• Lambswool Floor Mats",
   },
   {
     id: 5,
     brand: "Lamborghini",
     model: "Urus Performante",
-    variant: "SUV",
+    variant: "Super SUV",
     year: 2024,
     plate: "LMB-URS",
     color: "Grigio Lynx",
@@ -101,9 +99,9 @@ export const cars = [
     price: 820000,
     status: "available",
     photos: [],
-    notes: "",
+    notes: "World's fastest SUV.",
     features:
-      "• Carbon fibre roof\n• Akrapovič titanium exhaust\n• Rear-wheel steering\n• Night Vision Camera",
+      "• Carbon fibre roof\n• Akrapovič titanium exhaust\n• Rear-wheel steering\n• Night Vision Camera\n• Lamborghini Pieno Fiore interior",
   },
   {
     id: 6,
@@ -118,61 +116,176 @@ export const cars = [
     transmission: "automatic",
     bodyType: "convertible",
     price: 620000,
-    status: "maintenance",
+    status: "available",
     photos: [],
-    notes: "",
+    notes: "The icon. Turbocharged perfection.",
     features:
-      "• PASM Sport suspension\n• Burmester High-End Surround Sound\n• Sport Chrono Package\n• Porsche Dynamic Light System",
+      "• PASM Sport suspension\n• Burmester High-End Sound\n• Sport Chrono Package\n• Porsche Dynamic Light System\n• Rear-axle steering",
+  },
+  {
+    id: 7,
+    brand: "Bentley",
+    model: "Continental GT",
+    variant: "Speed Convertible",
+    year: 2024,
+    plate: "BNT-CGT",
+    color: "Verdant",
+    mileage: 600,
+    fuelType: "petrol",
+    transmission: "automatic",
+    bodyType: "convertible",
+    price: 1250000,
+    status: "available",
+    photos: [],
+    notes: "Hand-crafted luxury at its finest.",
+    features:
+      "• Naim for Bentley Audio\n• Rotating Display\n• Diamond-in-Diamond quilting\n• All-Season Comfort Specification\n• City Specification",
+  },
+  {
+    id: 8,
+    brand: "McLaren",
+    model: "720S",
+    variant: "Spider",
+    year: 2023,
+    plate: "MCL-720",
+    color: "Papaya Spark",
+    mileage: 900,
+    fuelType: "petrol",
+    transmission: "automatic",
+    bodyType: "convertible",
+    price: 1100000,
+    status: "available",
+    photos: [],
+    notes: "Pure British supercar engineering.",
+    features:
+      "• Carbon Fibre MonoCell II chassis\n• Active Dynamics Panel\n• McLaren Track Telemetry\n• Electrochromic glass roof\n• Variable Drift Control",
   },
 ];
 
-// ── Promotions seed (fallback when apex-driveos-promotions is empty) ───────────────
+// ── Seed promotions — FUTURE DATES ────────────────────────────────────────────
 export const promotions = [
   {
     id: 1,
     promotionId: "PROMO-001",
-    name: "Eid Al-Adha Special",
-    description: "Celebrate Eid with an exclusive discount on all vehicles.",
+    name: "Summer Luxury Festival",
+    description:
+      "Celebrate summer with an exclusive discount across our entire collection.",
     type: "festival",
     discountType: "percentage",
     discountValue: 8,
     appliesTo: "all",
     brandFilter: null,
     modelFilter: null,
-    startDate: "2026-06-01",
-    endDate: "2026-06-30",
+    startDate: "2026-07-01",
+    endDate: "2026-08-31",
+    createdAt: "2026-06-20T08:00:00",
   },
   {
     id: 2,
     promotionId: "PROMO-002",
-    name: "BMW Summer Drive",
-    description: "Exclusive summer offer on all BMW models.",
+    name: "BMW Exclusive Offer",
+    description:
+      "Drive the ultimate driving machine with our exclusive BMW summer deal.",
     type: "percentage",
     discountType: "percentage",
     discountValue: 5,
     appliesTo: "brand",
     brandFilter: "BMW",
     modelFilter: null,
-    startDate: "2026-06-01",
-    endDate: "2026-07-31",
+    startDate: "2026-07-01",
+    endDate: "2026-09-30",
+    createdAt: "2026-06-25T09:00:00",
   },
   {
-    id: 6,
-    promotionId: "PROMO-006",
+    id: 3,
+    promotionId: "PROMO-003",
+    name: "Rolls Royce VIP Privilege",
+    description:
+      "An extraordinary offer for extraordinary clients on the Ghost EWB.",
+    type: "flat",
+    discountType: "flat",
+    discountValue: 100000,
+    appliesTo: "model",
+    brandFilter: "Rolls Royce",
+    modelFilter: "Ghost EWB",
+    startDate: "2026-07-01",
+    endDate: "2026-10-31",
+    createdAt: "2026-07-01T10:00:00",
+  },
+  {
+    id: 4,
+    promotionId: "PROMO-004",
+    name: "Loyalty Reward Programme",
+    description:
+      "Returning customers receive an exclusive loyalty discount on any vehicle.",
+    type: "loyalty",
+    discountType: "percentage",
+    discountValue: 3,
+    appliesTo: "all",
+    brandFilter: null,
+    modelFilter: null,
+    startDate: "2026-01-01",
+    endDate: "2026-12-31",
+    createdAt: "2026-01-01T00:00:00",
+  },
+  {
+    id: 5,
+    promotionId: "PROMO-005",
     name: "Trade-In Bonus",
-    description: "AED 25,000 bonus when trading in any vehicle.",
+    description:
+      "Receive AED 25,000 bonus value when you trade in your current vehicle.",
     type: "trade_in",
     discountType: "flat",
     discountValue: 25000,
     appliesTo: "all",
     brandFilter: null,
     modelFilter: null,
-    startDate: "2026-06-15",
-    endDate: "2026-08-15",
+    startDate: "2026-07-01",
+    endDate: "2026-12-31",
+    createdAt: "2026-07-01T09:00:00",
+  },
+  {
+    id: 6,
+    promotionId: "PROMO-006",
+    name: "Ferrari Pista — Last Unit",
+    description:
+      "Final clearance on our Ferrari 488 Pista Spider. Exceptional value.",
+    type: "flat",
+    discountType: "flat",
+    discountValue: 75000,
+    appliesTo: "model",
+    brandFilter: "Ferrari",
+    modelFilter: "488 Pista",
+    startDate: "2026-07-01",
+    endDate: "2026-09-30",
+    createdAt: "2026-07-01T10:00:00",
   },
 ];
 
-// ── TIME_SLOTS (for test drive booking form) ──────────────────────────────────
+// ── Seed customers (for Account page demo) ────────────────────────────────────
+export const customers = [
+  {
+    id: 1,
+    customerId: "CUST-001",
+    name: "Mohammed Al-Rashid",
+    email: "mohammed@email.com",
+    mobileCode: "+971",
+    mobile: "50 123 4567",
+    whatsappCode: "+971",
+    whatsapp: "50 123 4567",
+    dob: "",
+    source: "Walk-in",
+    instagram: "",
+    facebook: "",
+    status: "vip",
+    notes: "VIP client. Repeat buyer.",
+    createdAt: "2026-01-15",
+    purchases: [],
+    inquiries: [],
+  },
+];
+
+// ── TIME_SLOTS ────────────────────────────────────────────────────────────────
 export const TIME_SLOTS = [
   "09:00 AM",
   "10:00 AM",
@@ -186,7 +299,7 @@ export const TIME_SLOTS = [
   "06:00 PM",
 ];
 
-// ── COUNTRY_CODES (for phone input) ──────────────────────────────────────────
+// ── COUNTRY_CODES ─────────────────────────────────────────────────────────────
 export const COUNTRY_CODES = [
   { code: "+971", flag: "🇦🇪", country: "UAE" },
   { code: "+966", flag: "🇸🇦", country: "Saudi Arabia" },
@@ -200,37 +313,34 @@ export const COUNTRY_CODES = [
   { code: "+49", flag: "🇩🇪", country: "Germany" },
 ];
 
-// ── Booking ID generator ──────────────────────────────────────────────────────
+// ── ID generators ─────────────────────────────────────────────────────────────
 export const generateBookingId = (existing = []) => {
   const nums = existing
     .map((b) => {
-      const match = (b.bookingId || "").match(/TD-\d{4}-(\d+)/);
-      return match ? parseInt(match[1], 10) : 0;
+      const m = (b.bookingId || "").match(/TD-\d{4}-(\d+)/);
+      return m ? parseInt(m[1], 10) : 0;
     })
     .filter((n) => !isNaN(n));
   const max = nums.length > 0 ? Math.max(...nums) : 0;
-  const year = new Date().getFullYear();
-  return `TD-${year}-${String(max + 1).padStart(3, "0")}`;
+  return `TD-${new Date().getFullYear()}-${String(max + 1).padStart(3, "0")}`;
 };
 
-// ── Customer ID generator ─────────────────────────────────────────────────────
 export const generateCustomerId = (existing = []) => {
   const nums = existing
     .map((c) => {
-      const match = (c.customerId || "").match(/CUST-(\d+)/);
-      return match ? parseInt(match[1], 10) : 0;
+      const m = (c.customerId || "").match(/CUST-(\d+)/);
+      return m ? parseInt(m[1], 10) : 0;
     })
     .filter((n) => !isNaN(n));
   const max = nums.length > 0 ? Math.max(...nums) : 0;
   return `CUST-${String(max + 1).padStart(3, "0")}`;
 };
 
-// ── Lead ID generator ─────────────────────────────────────────────────────────
 export const generateLeadId = (existing = []) => {
   const nums = existing
     .map((l) => {
-      const match = (l.leadId || "").match(/LEAD-(\d+)/);
-      return match ? parseInt(match[1], 10) : 0;
+      const m = (l.leadId || "").match(/LEAD-(\d+)/);
+      return m ? parseInt(m[1], 10) : 0;
     })
     .filter((n) => !isNaN(n));
   const max = nums.length > 0 ? Math.max(...nums) : 0;

@@ -19,6 +19,30 @@ export const SITE_KEYS = {
   customerSession: "apex-customer-session",
 };
 
+let channel = null;
+try {
+  channel = new BroadcastChannel("apex-driveos-sync");
+} catch {
+  // BroadcastChannel not supported (old browsers) — falls back to
+  // polling/seed data only
+  channel = null;
+}
+
+export const broadcastUpdate = (key, data) => {
+  try {
+    channel?.postMessage({ key, data, timestamp: Date.now() });
+  } catch {
+    /* silent */
+  }
+};
+
+export const onBroadcastMessage = (callback) => {
+  if (!channel) return () => {};
+  const handler = (e) => callback(e.data);
+  channel.addEventListener("message", handler);
+  return () => channel.removeEventListener("message", handler);
+};
+
 // ── Generic loader ────────────────────────────────────────────────────────────
 export const loadFromLS = (key, fallback = []) => {
   try {
@@ -33,10 +57,25 @@ export const loadFromLS = (key, fallback = []) => {
 export const saveToLS = (key, data) => {
   try {
     localStorage.setItem(key, JSON.stringify(data));
+    // Broadcast to other tabs/windows (including admin on different port)
+    broadcastUpdate(key, data);
     window.dispatchEvent(new CustomEvent(`${key}-updated`, { detail: data }));
   } catch {
-    /* silent — localStorage can be disabled in some browsers */
+    /* silent */
   }
+};
+
+export const initializeSeedData = (seedMap) => {
+  Object.entries(seedMap).forEach(([key, seedData]) => {
+    try {
+      const existing = localStorage.getItem(key);
+      if (!existing) {
+        localStorage.setItem(key, JSON.stringify(seedData));
+      }
+    } catch {
+      /* silent */
+    }
+  });
 };
 
 // ── Customer session ──────────────────────────────────────────────────────────
